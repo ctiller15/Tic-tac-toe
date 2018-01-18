@@ -13,6 +13,22 @@ class GameBoard extends React.Component {
 		}
 	}
 
+	checkTurn() {
+		if(this.state.turn === human) {
+			this.playerMove();
+		} else if(this.state.turn === ai) {
+			this.aiMove();
+		}
+	}
+
+	aiMove() {
+		console.log(`it is currently the AI's turn...`);
+	}
+
+	playerMove() {
+		console.log(`it is currently the human's turn...`);
+	}
+
 	// Checks all of the current empty spaces on the board.
 	// returns their indices as an array.
 	getEmptySpaces() {
@@ -47,21 +63,22 @@ class GameBoard extends React.Component {
 	handleClick(index, turn) {
 		console.log(`Clicked square ${index}!`);
 		let newArr = this.state.boardVals;
-		if(newArr[index] === "") {
-			newArr[index] = turn;
-			console.log(newArr);
-			console.log(this.getEmptySpaces());
-			console.log(this.getWinner(this.state.boardVals, turn));
-			this.setState(
-				{
-					boardVals: newArr,
-					turn: turn === "X" ? "O" : "X",
-					gameOver: this.getWinner(this.state.boardVals, turn)
-				});			
-		} else {
-			console.log("That one has already been clicked!");
+		if(turn === human){
+			if(newArr[index] === "") {
+				newArr[index] = turn;
+				console.log(newArr);
+				console.log(this.getEmptySpaces());
+				console.log(this.getWinner(this.state.boardVals, turn));
+				this.setState(
+					{
+						boardVals: newArr,
+						turn: turn === "X" ? "O" : "X",
+						gameOver: this.getWinner(this.state.boardVals, turn)
+					});			
+			} else {
+				console.log("That one has already been clicked!");
+			}			
 		}
-
 	}
 
 	squares() {
@@ -86,6 +103,7 @@ class GameBoard extends React.Component {
 	render() {
 		return(
 			<div className="gameboard">
+				{this.checkTurn()}
 				{this.squares()}
 			</div>
 		);		
