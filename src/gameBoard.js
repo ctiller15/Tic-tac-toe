@@ -2,12 +2,26 @@ import React from 'react';
 
 var human = 'X';
 var ai = 'O';
+var firstMove = 0;
+var lastMove = 0;
+var moveCount = 0;
+
+const winCombos = [
+	[0,1,2],
+	[0,3,6],
+	[0,4,8],
+	[1,4,7],
+	[2,4,6],
+	[2,5,8],
+	[3,4,5],
+	[6,7,8]
+];
 
 class GameBoard extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			boardVals: ["X","O","","","","","","",""],
+			boardVals: ["","","","","","","","",""],
 			turn: human,
 			gameOver: false
 		}
@@ -108,10 +122,48 @@ class GameBoard extends React.Component {
 
 	aiMove() {
 		let board = this.state.boardVals;
-		console.log(`it is currently the AI's turn...`, this.state.turn);
-		board[this.minimax(this.state.boardVals, this.state.turn).index] = ai;
-		// console.log(board, this.minimax(this.state.boardVals, this.state.turn));
-		this.setState({turn: ai === "X" ? "O" : "X"}, this.checkTurn);
+		if(moveCount <= 4) {
+			console.log(moveCount);
+			console.log("we can move.");
+			if(moveCount === 1) {
+				if(firstMove !== 4) {
+					board[4] = ai;
+				} else {
+					board[0] = ai;
+				}
+			} else if(moveCount === 3) {
+				console.log(firstMove, lastMove);
+				// First, block any potential wins.
+				for(var i = 0; i < winCombos.length; i++) {
+					console.log(winCombos[i].indexOf(firstMove), winCombos[i].indexOf(lastMove));
+					if((winCombos[i].indexOf(firstMove) > -1) && (winCombos[i].indexOf(lastMove) > -1)) {
+						// Oh no! We need to stop it from happening!
+						let temp = winCombos[i];
+						temp.splice(winCombos[i].indexOf(firstMove), 1);
+						temp.splice(winCombos[i].indexOf(lastMove), 1);
+						console.log(winCombos, winCombos[i].indexOf(firstMove), winCombos[i].indexOf(lastMove));
+						if(board[temp[0]] !== ai) {
+							console.log(`Player about to win with space ${firstMove} and ${lastMove}`);	
+							console.log(`Counter by placing in space ${temp[0]}`);
+						}
+					}
+				}
+
+			}
+			this.setState(
+				{
+					boardVals: board,
+					turn: ai === "X" ? "O" : "X"
+				}
+			);
+			moveCount++;
+		}
+		else {
+			console.log(`it is currently the AI's turn...`, this.state.turn);
+			board[this.minimax(this.state.boardVals, this.state.turn).index] = ai;
+			moveCount++;
+			this.setState({turn: ai === "X" ? "O" : "X"}, this.checkTurn);			
+		}
 	}
 
 	playerMove() {
@@ -152,11 +204,13 @@ class GameBoard extends React.Component {
 	handleClick(index, turn) {
 		console.log(`Clicked square ${index}!`);
 		let newArr = this.state.boardVals;
+		moveCount === 0 ? firstMove = index : lastMove = index;
 		if(turn === human){
 			if(newArr[index] === "") {
 				newArr[index] = turn;
-				console.log(newArr);
+				console.log(newArr, lastMove);
 				console.log(`setting the state...`);
+				moveCount++;
 				this.setState(
 					{
 						boardVals: newArr,
