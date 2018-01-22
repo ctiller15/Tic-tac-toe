@@ -122,6 +122,7 @@ class GameBoard extends React.Component {
 
 	aiMove() {
 		let board = this.state.boardVals;
+		let counter = false;
 		if(moveCount <= 4) {
 			console.log(moveCount);
 			console.log("we can move.");
@@ -146,29 +147,46 @@ class GameBoard extends React.Component {
 							console.log(`Player about to win with space ${firstMove} and ${lastMove}`);	
 							console.log(`Counter by placing in space ${temp[0]}`);
 							board[temp[0]] = ai;
+							counter = true;
 						}
 					}
 				}
 
 				// If that doesn't work, account for the edge cases.
-				if(firstMove === 0) {
-					lastMove === 5 ? board[7] = ai : lastMove === 7 ? board[5] = ai : board[1] = ai;
-				} else if( firstMove === 1 ) {
-					lastMove === 3 ? board[2] = ai : lastMove === 5 ? board[0] = ai : lastMove === 6 ? board[5] = ai : lastMove === 7 ? board[1] = ai : board[3] = ai;
-				} else if(firstMove === 2) {
-					lastMove === 3 ? board[7] = ai : lastMove === 6 ? board[1] = ai : board[3] = ai;
-				} else if(firstMove === 3) {
-					lastMove === 1 ? board[2] = ai : lastMove === 2 ? board[7] = ai : lastMove === 5 || lastMove === 8 ? board[1] = ai : board[0] = ai;
-				} else if(firstMove === 4) {
-					lastMove === 1 ? board[7] = ai : lastMove === 2 ? board[6] = ai : board[2] = ai;
-				} else if(firstMove === 5) {
-					lastMove === 0 ? board[7] = ai : lastMove === 1 || lastMove === 3 ? board[0] = ai : lastMove === 6 ? board[1] = ai : board[2] = ai;
-				} else if(firstMove === 6) {
-					lastMove === 1 ? board[5] = ai : board[1] = ai;
-				} else if(firstMove === 7) {
-					lastMove === 0 ? board[5] = ai : lastMove === 1 || lastMove === 3 ? board[0] = ai : lastMove === 2 ? board[3] = ai : board[2] = ai;
-				} else if(firstMove === 8) {
-					lastMove === 0 || lastMove === 3 ? board[1] = ai : board[3] = ai;
+				if(!counter) {
+
+
+					switch(firstMove) {
+						case 0:
+							lastMove === 5 ? board[7] = ai : lastMove === 7 ? board[5] = ai : board[1] = ai;
+							break;
+						case 1:
+							lastMove === 3 ? board[2] = ai : lastMove === 5 ? board[0] = ai : lastMove === 6 ? board[5] = ai : lastMove === 7 ? board[0] = ai : board[3] = ai;
+							break;
+						case 2:
+							lastMove === 3 ? board[7] = ai : lastMove === 6 ? board[1] = ai : board[3] = ai;
+							break;
+						case 3:
+							lastMove === 1 ? board[2] = ai : lastMove === 2 ? board[7] = ai : lastMove === 8 ? board[1] = ai : board[0] = ai;
+							break;
+						case 4:
+							board[2] = ai;
+							break;
+						case 5:
+							lastMove === 0 ? board[7] = ai : lastMove === 1 || lastMove === 3 ? board[0] = ai : lastMove === 6 ? board[1] = ai : board[2] = ai;
+							break;
+						case 6:
+							lastMove === 1 ? board[5] = ai : board[1] = ai;
+							break;
+						case 7:
+							lastMove === 0 ? board[5] = ai : lastMove === 1 || lastMove === 3 ? board[0] = ai : lastMove === 2 ? board[3] = ai : board[2] = ai;
+							break;
+						case 8:
+							lastMove === 0 || lastMove === 3 ? board[1] = ai : board[3] = ai;
+							break;
+						default:
+							console.log("No fallback for that move!");
+					}
 				}
 
 			}
