@@ -158,17 +158,17 @@ class GameBoard extends React.Component {
 				} else if(firstMove === 2) {
 					lastMove === 3 ? board[7] = ai : lastMove === 6 ? board[1] = ai : board[3] = ai;
 				} else if(firstMove === 3) {
-					lastMove === 1 ? board[2] = ai : lastMove === 2 ? board[7] = ai : lastMove === 5 ? board[1] = ai : lastMove === 7 ? board[0] = ai : board[1] = ai;
+					lastMove === 1 ? board[2] = ai : lastMove === 2 ? board[7] = ai : lastMove === 5 || lastMove === 8 ? board[1] = ai : board[0] = ai;
 				} else if(firstMove === 4) {
 					lastMove === 1 ? board[7] = ai : lastMove === 2 ? board[6] = ai : board[2] = ai;
 				} else if(firstMove === 5) {
-					lastMove === 0 ? board[7] = ai : lastMove === 1 ? board[0] = ai : lastMove === 3 ? board[0] = ai : lastMove === 6 ? board[1] = ai : board[2] = ai;
+					lastMove === 0 ? board[7] = ai : lastMove === 1 || lastMove === 3 ? board[0] = ai : lastMove === 6 ? board[1] = ai : board[2] = ai;
 				} else if(firstMove === 6) {
-					lastMove === 1 ? board[5] = ai : lastMove === 2 ? board[1] = ai : board[1] = ai;
+					lastMove === 1 ? board[5] = ai : board[1] = ai;
 				} else if(firstMove === 7) {
-					lastMove === 0 ? board[5] = ai : lastMove === 1 ? board[0] = ai : lastMove === 2 ? board[3] = ai : lastMove === 3 ? board[0] = ai : board[2] = ai;
+					lastMove === 0 ? board[5] = ai : lastMove === 1 || lastMove === 3 ? board[0] = ai : lastMove === 2 ? board[3] = ai : board[2] = ai;
 				} else if(firstMove === 8) {
-					lastMove === 0 ? board[1] = ai : lastMove === 1 ? board[3] = ai : board[1] = ai;
+					lastMove === 0 || lastMove === 3 ? board[1] = ai : board[3] = ai;
 				}
 
 			}
