@@ -145,8 +145,30 @@ class GameBoard extends React.Component {
 						if(board[temp[0]] !== ai) {
 							console.log(`Player about to win with space ${firstMove} and ${lastMove}`);	
 							console.log(`Counter by placing in space ${temp[0]}`);
+							board[temp[0]] = ai;
 						}
 					}
+				}
+
+				// If that doesn't work, account for the edge cases.
+				if(firstMove === 0) {
+					lastMove === 5 ? board[7] = ai : lastMove === 7 ? board[5] = ai : board[1] = ai;
+				} else if( firstMove === 1 ) {
+					lastMove === 3 ? board[2] = ai : lastMove === 5 ? board[0] = ai : lastMove === 6 ? board[5] = ai : lastMove === 7 ? board[1] = ai : board[3] = ai;
+				} else if(firstMove === 2) {
+					lastMove === 3 ? board[7] = ai : lastMove === 6 ? board[1] = ai : board[3] = ai;
+				} else if(firstMove === 3) {
+					lastMove === 1 ? board[2] = ai : lastMove === 2 ? board[7] = ai : lastMove === 5 ? board[1] = ai : lastMove === 7 ? board[0] = ai : board[1] = ai;
+				} else if(firstMove === 4) {
+					lastMove === 1 ? board[7] = ai : lastMove === 2 ? board[6] = ai : board[2] = ai;
+				} else if(firstMove === 5) {
+					lastMove === 0 ? board[7] = ai : lastMove === 1 ? board[0] = ai : lastMove === 3 ? board[0] = ai : lastMove === 6 ? board[1] = ai : board[2] = ai;
+				} else if(firstMove === 6) {
+					lastMove === 1 ? board[5] = ai : lastMove === 2 ? board[1] = ai : board[1] = ai;
+				} else if(firstMove === 7) {
+					lastMove === 0 ? board[5] = ai : lastMove === 1 ? board[0] = ai : lastMove === 2 ? board[3] = ai : lastMove === 3 ? board[0] = ai : board[2] = ai;
+				} else if(firstMove === 8) {
+					lastMove === 0 ? board[1] = ai : lastMove === 1 ? board[3] = ai : board[1] = ai;
 				}
 
 			}
