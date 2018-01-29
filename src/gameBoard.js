@@ -35,18 +35,18 @@ class GameBoard extends React.Component {
 		var moves = [];
 
 		var emptySpaces = this.getEmptySpaces();
-		console.log(emptySpaces);
+		// console.log(emptySpaces);
 
 		// The base condition for the minimax function.
 
 		if(this.getWinner(board, human)) {
-			console.log('human win!');
+			// console.log('human win!');
 			return {score: -10};
 		} else if(this.getWinner(board, ai)) {
-			console.log('ai win!');
+			// console.log('ai win!');
 			return {score: 10};
 		} else if(emptySpaces.length === 0) {
-			console.log('game ends!');
+			// console.log('game ends!');
 			return {score: 0};
 		}
 
@@ -58,30 +58,30 @@ class GameBoard extends React.Component {
 			// Create an object for each index.
 			var move = {};
 			move.index = emptySpaces[i];
-			console.log(move);
+			// console.log(move);
 
 			// Creating a "move" for the current player.
 			board[emptySpaces[i]] = player;
-			console.log(board);
+			// console.log(board);
 
 			// Call minimax, return the value, and then reset to empty.
 			// Store the result into the move object.
 
 			if(player === ai) {
 				result = this.minimax(board, human);
-				console.log(result, this.minimax(board, human));
+				// console.log(result, this.minimax(board, human));
 				move.score = result.score;
 			} else {
 				result = this.minimax(board, ai);
-				console.log(result);
+				// console.log(result);
 				move.score = result.score;
 			}
-			console.log(emptySpaces[i], result);
+			// console.log(emptySpaces[i], result);
 
 			board[emptySpaces[i]] = "";
 
 			moves.push(move);
-			console.log(moves);
+			// console.log(moves);
 		}
 
 
@@ -112,11 +112,13 @@ class GameBoard extends React.Component {
 	}
 
 	checkTurn() {
-		console.log(this.state);
-		if(this.state.turn === human) {
-			this.playerMove();
-		} else if(this.state.turn === ai) {
-			this.aiMove();
+		if(!this.state.gameOver) {
+			console.log(this.state.gameOver);
+			if(this.state.turn === human) {
+				this.playerMove();
+			} else if(this.state.turn === ai) {
+				this.aiMove();
+			}			
 		}
 	}
 
@@ -190,19 +192,26 @@ class GameBoard extends React.Component {
 				}
 
 			}
+			console.log(this.getWinner(this.state.boardVals, this.state.turn), this.state.turn);
 			this.setState(
 				{
 					boardVals: board,
-					turn: ai === "X" ? "O" : "X"
+					turn: ai === "X" ? "O" : "X",
+					gameOver: this.getWinner(this.state.boardVals, this.state.turn)
 				}
 			);
 			moveCount++;
 		}
 		else {
 			console.log(`it is currently the AI's turn...`, this.state.turn);
+
 			board[this.minimax(this.state.boardVals, this.state.turn).index] = ai;
 			moveCount++;
-			this.setState({turn: ai === "X" ? "O" : "X"}, this.checkTurn);			
+			this.setState(
+					{
+						turn: ai === "X" ? "O" : "X", 
+						gameOver: this.getWinner(board, this.state.turn),
+					}, this.checkTurn);			
 		}
 	}
 
